@@ -8,8 +8,12 @@ function App() {
 
   useEffect(() => {
     async function grabData() {
-      const response = axios.get("http://localhost:3000");
-    }
+      const response = await axios.get("http://localhost:3000/entrees");
+      if (response.status === 200) {
+        setData(response.data);
+      }
+    };
+
     grabData();
 
   }, []);
