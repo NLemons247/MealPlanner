@@ -15,8 +15,15 @@ const client = new MongoClient(uri, {
 let database;
 
 module.exports = {
-    connectToServer: () => {
-        database = client.db("entrees");
+    connectToServer: async () => {
+      try {
+        await client.connect();
+        database = client.db("recipeData");
+        console.log("Connected to MongoDB.");
+      } catch (err) {
+        console.error("MongoDB connection error: ", err);
+      }
+        //database = client.db("entrees");
     },
     getDB: () => {
         return database;
