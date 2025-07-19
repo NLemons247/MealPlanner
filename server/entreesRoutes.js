@@ -5,10 +5,10 @@ const ObjectId = require("mongodb").ObjectId;
 
 let entreesRoutes = express.Router();
 
-//Retrieve All
+//#1 - Retrieve All
 entreesRoutes.route("/entrees").get(async (request, response) => {
     let db = database.getDB();
-    let data = await db.collection("entrees").find({});
+    let data = await db.collection("entrees").find({}).toArray();
     
     if (data.length > 0) {
         response.json(data);
@@ -18,7 +18,7 @@ entreesRoutes.route("/entrees").get(async (request, response) => {
 
 });
 
-//Retrieve One
+//#2 - Retrieve One
 entreesRoutes.route("/entrees/:id").get(async (request, response) => {
     let db = database.getDB();
     let data = await db.collection("entrees").findOne({_id: new ObjectId(request.params.id)});
@@ -30,10 +30,11 @@ entreesRoutes.route("/entrees/:id").get(async (request, response) => {
     }
 });
 
-//Create One
+//#3 - Create One
 entreesRoutes.route("/entrees").post(async (request, response) => {
     let db = database.getDB();
 
+    //document schema
     let mongoObject = {
         title: request.body.title,
         description: request.body.description,
@@ -47,10 +48,11 @@ entreesRoutes.route("/entrees").post(async (request, response) => {
     response.json(data);
 });
 
-//Update One
+//#4 - Update One
 entreesRoutes.route("/entrees/:id").put(async (request, response) => {
     let db = database.getDB();
 
+    //document schema
     let mongoObject = {
         $set: {
         title: request.body.title,
@@ -66,7 +68,7 @@ entreesRoutes.route("/entrees/:id").put(async (request, response) => {
     response.json(data);
 });
 
-//Delete One
+//#5 - Delete One
 entreesRoutes.route("/entrees/:id").delete(async (request, response) => {
     let db = database.getDB();
     let data = await db.collection("entrees").deleteOne({_id: new ObjectId(request.params.id)}).toArray();
